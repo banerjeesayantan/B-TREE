@@ -1,0 +1,107 @@
+# Level Order Traversal (BFS) in C++
+
+This repository contains the **Level Order Traversal (Breadth-First Search)** implementation for binary trees in C++.
+
+---
+
+## 🔹 Problem Statement
+
+Given a binary tree, return the **level order traversal** of its nodes' values. (i.e., from left to right, level by level)
+
+Example:
+
+```
+Input:
+        1
+       / \
+      2   3
+     / \   \
+    4   5   6
+
+Output:
+[
+  [1],
+  [2,3],
+  [4,5,6]
+]
+```
+
+---
+
+## 🔹 Code Implementation
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (!root) return ans;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> level;
+            for (int i = 0; i < size; i++) {
+                TreeNode* temp = q.front();
+                q.pop();
+                level.push_back(temp->val);
+
+                if (temp->left) q.push(temp->left);
+                if (temp->right) q.push(temp->right);
+            }
+            ans.push_back(level);
+        }
+        return ans;
+    }
+};
+```
+
+---
+
+## 🔹 How It Works
+
+1. Use a **queue** to keep track of nodes in the current level.
+2. For each level, process all nodes, push their values to a temporary vector.
+3. Add child nodes of each node to the queue for the next level.
+4. Repeat until the queue is empty.
+5. Return the list of levels.
+
+---
+
+## 🔹 Use Cases
+
+* Binary Tree traversal by levels.
+* Shortest path / minimum steps in trees or graphs.
+* Social network friend suggestions (degree of connection).
+* AI/game state exploration level by level.
+* BFS-based problems on LeetCode (e.g., Rotting Oranges, Word Ladder).
+
+---
+
+## 🔹 Time and Space Complexity
+
+* **Time Complexity:** O(n), where n = number of nodes.
+* **Space Complexity:** O(n), due to the queue and the answer vector.
+
+---
+
+## 🔹 Reference
+
+* [LeetCode 102: Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
