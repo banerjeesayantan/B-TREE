@@ -1,0 +1,107 @@
+# Maximum Path Sum in Binary Tree (C++)
+
+This repository contains a **C++ solution to find the maximum path sum in a binary tree** using a single global variable to track the maximum value.
+
+---
+
+## 🔹 Problem Statement
+
+Given a binary tree, find the **maximum path sum**. A path can start and end at any node, and must go downwards (can only travel left or right at each step).
+
+Example:
+
+```
+Input:
+       1
+     /   \
+    2     3
+   / \     \
+  4   5     6
+
+Output: 21
+Explanation: Maximum path is 4 → 2 → 1 → 3 → 6
+```
+
+---
+
+## 🔹 Code Implementation
+
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int maxSum = INT_MIN; // store global maximum
+
+    int helper(TreeNode* root) {
+        if (!root) return 0;
+
+        // compute max path sum of left and right, ignore negative sums
+        int left = max(0, helper(root->left));
+        int right = max(0, helper(root->right));
+
+        // update global max including current node as root
+        maxSum = max(maxSum, root->val + left + right);
+
+        // return max sum starting from this node to parent
+        return root->val + max(left, right);
+    }
+
+    int maxPathSum(TreeNode* root) {
+        helper(root);
+        return maxSum;
+    }
+};
+```
+
+---
+
+## 🔹 How It Works
+
+1. **Use a global variable** `maxSum` to track the maximum path sum.
+2. Traverse the tree in **post-order** (Left → Right → Root).
+3. At each node:
+
+   * Compute **max sum of left and right subtrees** (ignore negatives).
+   * Update `maxSum` including the node itself.
+   * Return the **max single path sum** for the parent to use.
+4. After traversal, `maxSum` contains the **maximum path sum in the tree**.
+
+---
+
+## 🔹 Key Points
+
+* Uses **post-order traversal** to compute bottom-up sums.
+* Single global variable reduces complexity and makes logic clean.
+* Handles **negative node values** by using `max(0, ...)`.
+
+---
+
+## 🔹 Time and Space Complexity
+
+* **Time Complexity:** O(n), where n = number of nodes (each node visited once).
+* **Space Complexity:** O(h), where h = height of the tree (recursion stack).
+
+---
+
+## 🔹 Use Cases
+
+* Binary tree algorithms and interview problems.
+* Evaluating **expression trees** (bottom-up calculation).
+* Calculating **optimal paths** in hierarchical structures or decision trees.
+
+---
+
+## 🔹 Reference
+
+* [LeetCode 124: Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
