@@ -1,0 +1,104 @@
+# Binary Tree Paths - LeetCode Problem
+
+## 🧠 Problem Statement
+
+Given the `root` of a binary tree, return **all root-to-leaf paths** in any order.
+
+A **leaf** is a node with no children.
+
+---
+
+## 🧩 Example
+
+**Input:**
+
+```
+    1
+   / \
+  2   3
+   \
+    5
+```
+
+**Output:**
+
+```
+["1->2->5", "1->3"]
+```
+
+---
+
+## 🚀 Correct C++ Solution
+
+```cpp
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> paths;
+        if (!root) return paths;
+        helper(root, "", paths);
+        return paths;
+    }
+
+private:
+    void helper(TreeNode* node, string path, vector<string>& paths) {
+        if (!node) return;
+        if (!path.empty()) path += "->";
+        path += to_string(node->val);
+        
+        // If leaf node, add the path to result
+        if (!node->left && !node->right) {
+            paths.push_back(path);
+            return;
+        }
+
+        helper(node->left, path, paths);
+        helper(node->right, path, paths);
+    }
+};
+```
+
+---
+
+## 💡 Explanation
+
+1. Start DFS from root.
+2. Build path string as you go deeper.
+3. When reaching a **leaf**, store the full path.
+4. Recursively explore left and right subtrees.
+
+---
+
+## 🧩 Key Points
+
+* Use **DFS** for traversal.
+* Use **string path + recursion** to build paths.
+* Time complexity: **O(N)**, visiting every node once.
+* Space complexity: **O(H)** (height of tree for recursion).
+
+---
+
+## 🧰 Common Mistake (Your Version)
+
+```cpp
+if(root == NULL) return 0; // ❌ wrong return type
+q.push(root->val);         // ❌ queue not needed
+```
+
+✅ Fix: Always return vector<string>, and use DFS not queue.
+
+---
+
+## 🏁 Output Example
+
+```
+Input: [1,2,3,null,5]
+Output: ["1->2->5", "1->3"]
+```
+
+---
+
+## 🧾 Notes
+
+* Postorder not required here; use **preorder DFS (root-left-right)**.
+* Perfect for problems like **print all paths**, **sum root-to-leaf**, or **path existence checks**.
